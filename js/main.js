@@ -1,6 +1,7 @@
 const backToTopDOM = document.querySelector('.back-to-top');
-const stickyDOM = document.querySelector('header');
-
+const headerDOM = document.querySelector('header');
+let wasStickyAtLeastOne = false;
+let notStickyTimer = null;
 
 window.addEventListener('scroll', () => {
     if (window.scrollY > 500) {
@@ -8,12 +9,20 @@ window.addEventListener('scroll', () => {
     } else {
         backToTopDOM.classList.add('hide');
     }
-    if (window.scrollY > 150) {
-        stickyDOM.classList.add('notSticky');
-        stickyDOM.classList.add('sticky');
 
+    if (window.scrollY > 150) {
+        wasStickyAtLeastOne = true;
+        headerDOM.classList.add('sticky');
+        headerDOM.classList.remove('not-sticky');
     } else {
-        stickyDOM.classList.remove('sticky');
-        stickyDOM.classList.add('notSticky');
+        headerDOM.classList.remove('sticky');
+        if (wasStickyAtLeastOne) {
+            headerDOM.classList.add('not-sticky');
+
+            notStickyTimer = setTimeout(() => {
+                headerDOM.classList.remove('not-sticky');
+                wasStickyAtLeastOne = false;
+            }, 2000)
+        }
     }
 })
